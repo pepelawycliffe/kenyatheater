@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module configVersion="1.2">
+	<id>${project.parent.artifactId}</id>
+	<name>${project.parent.name}</name>
+	<version>${project.parent.version}</version>
+	<package>org.openmrs.module.kenyatheater</package>
+	<author>wycliffe pepela</author>
+	<description>
+			${project.parent.description}
+	</description>
+
+	<activator>org.openmrs.module.kenyatheater.kenyatheaterActivator</activator>
+
+	<require_version>2.0</require_version>
+
+	<!--<aware_of_modules>-->
+		<!--<aware_of_module>org.openmrs.module.legacyui</aware_of_module>-->
+	<!--</aware_of_modules>-->
+
+	<require_modules>
+		<require_module version="${webservicesRestModuleVersion}">org.openmrs.module.webservices.rest</require_module>
+		<require_module version="5.7.0">org.openmrs.module.bedmanagement</require_module>
+		<require_module version="${openmrsAtomfeedVersion}">org.ict4h.openmrs.openmrs-atomfeed</require_module>
+	</require_modules>
+
+	<advice>
+		<point>org.openmrs.module.kenyatheater.api.service.SurgicalBlockService</point>
+		<class>org.openmrs.module.kenyatheater.advice.SurgicalBlockAdvice</class>
+	</advice>
+
+	<advice>
+		<point>org.openmrs.module.kenyatheater.api.service.SurgicalAppointmentService</point>
+		<class>org.openmrs.module.kenyatheater.advice.SurgicalAppointmentAdvice</class>
+	</advice>
+
+	<mappingFiles>
+		SurgicalAppointment.hbm.xml
+		SurgicalBlock.hbm.xml
+		SurgicalAppointmentAttribute.hbm.xml
+		SurgicalAppointmentAttributeType.hbm.xml
+	</mappingFiles>
+
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>fr</lang>
+		<file>messages_fr.properties</file>
+	</messages>
+	<messages>
+		<lang>es</lang>
+		<file>messages_es.properties</file>
+	</messages>
+</module>
+

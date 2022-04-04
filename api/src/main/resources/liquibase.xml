@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="kenyatheater-201704241144" author="Shireesha">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="surgical_block"/>
+            </not>
+        </preConditions>
+        <comment>
+            Creating the surgical_block table
+        </comment>
+        <createTable tableName="surgical_block">
+            <column name="surgical_block_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="primary_provider_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_datetime" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_datetime" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_changed" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="voided" type="tinyint(1)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_voided" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="void_reason" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+        </createTable>
+        <addForeignKeyConstraint constraintName="surgical_block_provider_fk"
+                                 baseTableName="surgical_block" baseColumnNames="primary_provider_id"
+                                 referencedTableName="provider" referencedColumnNames="provider_id"/>
+        <addForeignKeyConstraint constraintName="surgical_block_location_fk"
+                                 baseTableName="surgical_block" baseColumnNames="location_id"
+                                 referencedTableName="location" referencedColumnNames="location_id"/>
+        <addForeignKeyConstraint constraintName="surgical_block_creator_by_fk"
+                                 baseTableName="surgical_block" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="surgical_block_changed_by_fk"
+                                 baseTableName="surgical_block" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="surgical_block_voided_by_fk"
+                                 baseTableName="surgical_block" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+    <changeSet id="kenyatheater-201705051144" author="Santhosh, Maharjun">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="surgical_appointment"/>
+            </not>
+        </preConditions>
+        <comment>
+            Creating the surgical_appointment table
+        </comment>
+        <createTable tableName="surgical_appointment">
+            <column name="surgical_appointment_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="patient_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surgical_block_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="actual_start_datetime" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="actual_end_datetime" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="notes" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sort_weight" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_changed" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="voided" type="tinyint(1)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_voided" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="void_reason" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="surgical_appointement_patient_fk"
+                                 baseTableName="surgical_appointment" baseColumnNames="patient_id"
+                                 referencedTableName="patient" referencedColumnNames="patient_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_surgical_block_by_fk"
+                                 baseTableName="surgical_appointment" baseColumnNames="surgical_block_id"
+                                 referencedTableName="surgical_block" referencedColumnNames="surgical_block_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_creator_by_fk"
+                                 baseTableName="surgical_appointment" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_changed_by_fk"
+                                 baseTableName="surgical_appointment" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_voided_by_fk"
+                                 baseTableName="surgical_appointment" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+    <changeSet id="20170512103950" author="Santhosh, Shireesha">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="surgical_appointment_attribute_type"/>
+            </not>
+        </preConditions>
+        <comment> Creating the surgical_appointment_attribute_type table</comment>
+        <createTable tableName="surgical_appointment_attribute_type">
+            <column autoIncrement="true" name="surgical_appointment_attribute_type_id" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="format" type="varchar(50)"/>
+            <column name="sort_weight" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_changed" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="retired" type="tinyint(1)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_retired" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="retire_reason" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="surgical_appointment_attribute_type_creator_by_fk"
+                                 baseTableName="surgical_appointment_attribute_type" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_attribute_type_changed_by_fk"
+                                 baseTableName="surgical_appointment_attribute_type" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_attribute_type_voided_by_fk"
+                                 baseTableName="surgical_appointment_attribute_type" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+    <changeSet id="20170726131000" author="Santhosh, Shireesha">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="surgical_appointment_attribute"/>
+            </not>
+        </preConditions>
+        <comment> Creating the surgical_appointment_attribute table</comment>
+        <createTable tableName="surgical_appointment_attribute">
+            <column autoIncrement="true" name="surgical_appointment_attribute_id" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="surgical_appointment_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surgical_appointment_attribute_type_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="value" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_changed" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="voided" type="tinyint(1)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_voided" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="void_reason" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="saa_surgical_appointment_id_by_fk"
+                                 baseTableName="surgical_appointment_attribute" baseColumnNames="surgical_appointment_id"
+                                 referencedTableName="surgical_appointment" referencedColumnNames="surgical_appointment_id"/>
+        <addForeignKeyConstraint constraintName="saa_surgical_appointment_attribute_type_id_by_fk"
+                                 baseTableName="surgical_appointment_attribute" baseColumnNames="surgical_appointment_attribute_type_id"
+                                 referencedTableName="surgical_appointment_attribute_type" referencedColumnNames="surgical_appointment_attribute_type_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_attribute_creator_by_fk"
+                                 baseTableName="surgical_appointment_attribute" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_attribute_changed_by_fk"
+                                 baseTableName="surgical_appointment_attribute" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="surgical_appointment_attribute_voided_by_fk"
+                                 baseTableName="surgical_appointment_attribute" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+    <changeSet id="Amman-201707121103" author="Shireesha, Maharjun">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="surgical_appointment_attribute" schemaName="openmrs"/>
+        </preConditions>
+        <comment>Increase the column size</comment>
+        <sql>
+           ALTER TABLE surgical_appointment_attribute MODIFY value VARCHAR(1023);
+        </sql>
+    </changeSet>
+    <changeSet id="Amman-201707101107"  author="Shireesha, Pramida">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege='View OT Schedules'</sqlCheck>
+        </preConditions>
+        <comment>Adding privilege for viewing the OT schedules</comment>
+        <sql>
+            INSERT INTO privilege (privilege, description, uuid) VALUES ('View OT Schedules', 'Ability to view OT schedules', uuid());
+        </sql>
+    </changeSet>
+    <changeSet id="Amman-201707101115"  author="Shireesha, Pramida">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Manage OT Schedules'</sqlCheck>
+        </preConditions>
+        <comment>Adding privilege for managing the OT schedules</comment>
+        <sql>
+            INSERT INTO privilege (privilege, description, uuid) VALUES ('Manage OT Schedules', 'Ability to manage OT schedules', uuid());
+        </sql>
+    </changeSet>
+    <changeSet id="201807031533" author="Siva, Saikumar" context="rel3.1">
+        <preConditions onFail="CONTINUE">
+            <tableExists tableName="surgical_appointment_attribute_type" schemaName="openmrs"/>
+        </preConditions>
+        <comment>Adding unique constraint for name column</comment>
+        <addUniqueConstraint columnNames="name"
+                             constraintName="unique_attributes"
+                             schemaName="openmrs"
+                             tableName="surgical_appointment_attribute_type"/>
+    </changeSet>
+    <include file="migrations/surgicalAppointmentAttributeTypes.xml" />
+    <changeSet id="Amman-201805131317" author="Maharjun , Saikumar" context="rel3.0" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                select count(*) from location_tag where name = 'Kenya Theater' and description = 'Kenya Theater';
+            </sqlCheck>
+        </preConditions>
+        <comment>Add Kenya Theater location tag</comment>
+        <sql>
+            INSERT INTO location_tag(name, description, creator, date_created, retired, uuid) VALUES ('Kenya Theater', 'Kenya Theater', 1, now(), 0, uuid());
+        </sql>
+    </changeSet>
+    <changeSet id="201707031330" author="Santhosh, Maharjun" runOnChange="true">
+        <comment>Adding patient listing queues for patients whose are in scheduled queue</comment>
+        <sqlFile path="patientListingQueueScheduled.sql"/>
+    </changeSet>
+
+    <changeSet id="201806211807" author="Suman, Saikumar">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM global_property where property = 'atomfeed.publish.eventsForSurgicalBlockChange';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding global property to act as switch for raising surgical block events</comment>
+        <insert tableName="global_property">
+            <column name="property" value="atomfeed.publish.eventsForSurgicalBlockChange"/>
+            <column name="property_value" value="true"/>
+            <column name="uuid" valueComputed="UUID()"/>
+            <column name="description" value="If set true, events related to surgical block changes are published"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="201806211817" author="Suman, Saikumar">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM global_property where property = 'atomfeed.event.urlPatternForSurgicalBlock';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding global property to specify the URL pattern for published surgical block events</comment>
+        <insert tableName="global_property">
+            <column name="property" value="atomfeed.event.urlPatternForSurgicalBlock"/>
+            <column name="property_value" value="/openmrs/ws/rest/v1/surgicalBlock/{uuid}?v=full"/>
+            <column name="uuid" valueComputed="UUID()"/>
+            <column name="description" value="URL pattern to use for published surgical block events. Default is /openmrs/ws/rest/v1/surgicalBlock/{uuid}?v=full. If you change default value, please add your custom implementation for the given URL"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="201807161746" author="Suman">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM global_property where property = 'atomfeed.publish.eventsForSurgicalAppointmentChange';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding global property to act as switch for raising surgical appointment events</comment>
+        <insert tableName="global_property">
+            <column name="property" value="atomfeed.publish.eventsForSurgicalAppointmentChange"/>
+            <column name="property_value" value="true"/>
+            <column name="uuid" valueComputed="UUID()"/>
+            <column name="description" value="If set true, events related to surgical appointment changes are published"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="201807161748" author="Suman">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM global_property where property = 'atomfeed.event.urlPatternForSurgicalAppointment';
+            </sqlCheck>
+        </preConditions>
+        <comment>Adding global property to specify the URL pattern for published surgical appointment events</comment>
+        <insert tableName="global_property">
+            <column name="property" value="atomfeed.event.urlPatternForSurgicalAppointment"/>
+            <column name="property_value" value="/openmrs/ws/rest/v1/surgicalAppointment/{uuid}?v=full"/>
+            <column name="uuid" valueComputed="UUID()"/>
+            <column name="description" value="URL pattern to use for published surgical appointment events. Default is /openmrs/ws/rest/v1/surgicalAppointment/{uuid}?v=full. If you change default value, please add your custom implementation for the given URL"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

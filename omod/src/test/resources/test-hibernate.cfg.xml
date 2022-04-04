@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping resource="SurgicalBlock.hbm.xml"/>
+        <mapping resource="SurgicalAppointment.hbm.xml"/>
+        <mapping resource="SurgicalAppointmentAttributeType.hbm.xml"/>
+        <mapping resource="SurgicalAppointmentAttribute.hbm.xml"/>
+        <mapping resource="Bed.hbm.xml"/>
+        <mapping resource="BedTag.hbm.xml"/>
+        <mapping resource="BedTagMap.hbm.xml"/>
+        <mapping resource="BedPatientAssignment.hbm.xml"/>
+        <mapping resource="BedLocationMapping.hbm.xml"/>
+        <mapping resource="BedType.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

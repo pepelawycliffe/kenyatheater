@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Beans to add to the current Application context definition -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  		    http://www.springframework.org/schema/context
+  		    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+  		    http://www.springframework.org/schema/jee
+  		    http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+  		    http://www.springframework.org/schema/tx
+  		    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+  		    http://www.springframework.org/schema/aop
+  		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+  		    http://www.springframework.org/schema/util
+  		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <context:component-scan base-package="org.openmrs.module.kenyatheater" />
+
+    <bean id="surgicalBlockDao" class="org.openmrs.module.kenyatheater.api.dao.SurgicalBlockDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="surgicalAppointmentDao" class="org.openmrs.module.kenyatheater.api.dao.SurgicalAppointmentDao">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="surgicalAppointmentServiceImpl" class="org.openmrs.module.kenyatheater.api.service.impl.SurgicalAppointmentServiceImpl">
+        <property name="surgicalAppointmentDao">
+            <ref bean="surgicalAppointmentDao"/>
+        </property>
+        <property name="surgicalBlockDao">
+            <ref bean="surgicalBlockDao"/>
+        </property>
+    </bean>
+
+    <bean id="surgicalAppointmentService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager"/>
+        </property>
+        <property name="target">
+            <ref bean="surgicalAppointmentServiceImpl"/>
+        </property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors"/>
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource"/>
+        </property>
+    </bean>
+
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.kenyatheater.api.service.SurgicalAppointmentService</value>
+                <ref local="surgicalAppointmentService"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="surgicalBlockServiceImpl" class="org.openmrs.module.kenyatheater.api.service.impl.SurgicalBlockServiceImpl">
+        <property name="surgicalBlockDAO">
+            <ref bean="surgicalBlockDao"/>
+        </property>
+    </bean>
+
+    <bean id="surgicalBlockService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager"/>
+        </property>
+        <property name="target">
+            <ref bean="surgicalBlockServiceImpl"/>
+        </property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors"/>
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource"/>
+        </property>
+    </bean>
+
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.kenyatheater.api.service.SurgicalBlockService</value>
+                <ref local="surgicalBlockService"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="surgicalAppointmentAttributeTypeDAO" class="org.openmrs.module.kenyatheater.api.dao.SurgicalAppointmentAttributeTypeDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="surgicalAppointmentAttributeTypeServiceImpl" class="org.openmrs.module.kenyatheater.api.service.impl.SurgicalAppointmentAttributeTypeServiceImpl">
+        <property name="surgicalAppointmentAttributeTypeDAO">
+            <ref bean="surgicalAppointmentAttributeTypeDAO"/>
+        </property>
+    </bean>
+
+    <bean id="surgicalAppointmentAttributeTypeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager"/>
+        </property>
+        <property name="target">
+            <ref bean="surgicalAppointmentAttributeTypeServiceImpl"/>
+        </property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors"/>
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource"/>
+        </property>
+    </bean>
+
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.kenyatheater.api.service.SurgicalAppointmentAttributeTypeService</value>
+                <ref local="surgicalAppointmentAttributeTypeService"/>
+            </list>
+        </property>
+    </bean>
+</beans>
